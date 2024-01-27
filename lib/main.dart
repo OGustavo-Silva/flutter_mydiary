@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(
+    title: "MyDiary",
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -17,16 +22,33 @@ class _MyAppState extends State<MyApp> {
   String text = "hello world";
 
   updateText() {
+    readNotes();
     setState(() {
-      text = "mudou";
+      text += "\nadicionado";
     });
+  }
+
+  Future<File> writeData() async {
+    final Directory directory = await getApplicationDocumentsDirectory();
+    final File file = File('${directory.path}/notes.txt');
+    return file.writeAsString('Hello, World!');
+  }
+
+  Future<String> readNotes() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/notes.txt');
+      String notes = await file.readAsString();
+      print(notes);
+      return notes;
+    } catch (e) {
+      return '';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "MyDiary",
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
             title: const Text("MyDiary"),
             centerTitle: true,
@@ -38,12 +60,37 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => updateText(),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context)=> const newEntryRoute())
+            );
+          },
           backgroundColor: const Color.fromARGB(199, 255, 255, 255),
           child: const Icon(Icons.add),
         ),
         backgroundColor: const Color.fromARGB(0, 56, 56, 56),
+      );
+    
+  }
+}
+
+class newEntryRoute extends StatelessWidget {
+  const newEntryRoute({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("teste"),
       ),
+      body: Center(
+          child: ElevatedButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: const Text("Go back"),
+      )),
     );
   }
 }
