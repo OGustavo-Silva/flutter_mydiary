@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_diary/new_entry_route.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
@@ -63,7 +64,7 @@ class _MyAppState extends State<MyApp> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context)=> const newEntryRoute())
+              MaterialPageRoute(builder: (context)=> const NewEntryRoute())
             );
           },
           backgroundColor: const Color.fromARGB(199, 255, 255, 255),
@@ -72,25 +73,5 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: const Color.fromARGB(0, 56, 56, 56),
       );
     
-  }
-}
-
-class newEntryRoute extends StatelessWidget {
-  const newEntryRoute({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("teste"),
-      ),
-      body: Center(
-          child: ElevatedButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text("Go back"),
-      )),
-    );
   }
 }
