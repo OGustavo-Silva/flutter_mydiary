@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_diary/new_entry_route.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 
 void main() {
   runApp(const MaterialApp(
@@ -21,31 +19,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String text = "hello world";
-
-  updateText() {
-    readNotes();
-    setState(() {
-      text += "\nadicionado";
-    });
-  }
-
-  Future<File> writeData() async {
-    final Directory directory = await getApplicationDocumentsDirectory();
-    final File file = File('${directory.path}/notes.txt');
-    return file.writeAsString('Hello, World!');
-  }
-
-  Future<String> readNotes() async {
-    try {
-      final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/notes.txt');
-      String notes = await file.readAsString();
-      print(notes);
-      return notes;
-    } catch (e) {
-      return '';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
