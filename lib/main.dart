@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_diary/new_entry_route.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 void main() {
+  createFolder();
   runApp(const MaterialApp(
     title: "MyDiary",
     home: MyApp(),
@@ -16,11 +19,15 @@ class MyApp extends StatefulWidget {
     return _MyAppState();
   }
 }
+void createFolder() async{
+  final Directory directory = await getApplicationDocumentsDirectory();
+  File('${directory.path}/myDiary/').create(recursive: true);
+  }
 
 class _MyAppState extends State<MyApp> {
   String text = "hello world";
-
   @override
+  
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(

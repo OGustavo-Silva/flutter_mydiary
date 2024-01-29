@@ -6,4 +6,11 @@ class Note{
 
   Note(this.title, this.content, this.createdDate, this.updatedDate);
 
+  Map toJson()=>{
+    'title': title,
+    'content': content,
+    'createdDate': createdDate.toString(),
+    'updatedDate': updatedDate.toString(),
+  };
+
 }

@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:my_diary/note.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
@@ -15,9 +17,13 @@ class _NewEntryRouteState extends State<NewEntryRoute> {
   final contentController = TextEditingController();
 
   Future<File> writeData(String title, String content) async {
+    Note newNote = Note(title, content, DateTime.now(), DateTime.now());
+    var noteJson = jsonEncode(newNote);
+    print(noteJson);
+
     final Directory directory = await getApplicationDocumentsDirectory();
-    final File file = File('${directory.path}/notes.txt');
-    return file.writeAsString('Hello, World!');
+    final File file = File('${directory.path}/myDiary/notes.txt');
+    return file.writeAsString(noteJson);
   }
 
   Future<String> readNotes() async {
