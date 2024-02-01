@@ -12,7 +12,7 @@ class NewEntryRoute extends StatefulWidget {
 }
 
 class _NewEntryRouteState extends State<NewEntryRoute> {
-  final _formKey = GlobalKey<FormState>;
+  //final _formKey = GlobalKey<FormState>;
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 

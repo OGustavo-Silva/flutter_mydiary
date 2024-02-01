@@ -9,28 +9,43 @@ void main() {
     title: "MyDiary",
     home: MyApp(),
   ));
+  checkExistingNotes();
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
+  
   @override
   State<StatefulWidget> createState() {
     return _MyAppState();
   }
 }
+
+//Vars for setting folders configs
+const title = "MyDiary";
+String fullYear = DateTime.now().toString();
+String year = fullYear.substring(0, 4);
+String month = fullYear.substring(5,7);
+String myDiaryPath = "$title/$year/$month";
+
 void createFolder() async{
   final Directory directory = await getApplicationDocumentsDirectory();
-  File('${directory.path}/myDiary/').create(recursive: true);
+  File('${directory.path}/$myDiaryPath/myJournal.txt').create(recursive: true);
   }
+
+void checkExistingNotes() async{
+  final Directory directory = await getApplicationDocumentsDirectory();
+  final stat = FileStat.statSync('${directory.path}/${title}');
+  print("oia a pedra ${stat.changed}");
+}
 
 class _MyAppState extends State<MyApp> {
   String text = "hello world";
   @override
-  DateTime.parse(DateTime.now());
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text("MyDiary"),
+            title: const Text(title),
             centerTitle: true,
             backgroundColor: const Color.fromARGB(199, 255, 255, 255)),
         body: Center(
