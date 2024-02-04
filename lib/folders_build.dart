@@ -1,6 +1,8 @@
+import 'package:my_diary/note.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
+import 'dart:convert';
 
 class FoldersBuild {
   final title = "MyDiary";
@@ -75,5 +77,15 @@ class FoldersBuild {
         print(notes);
       }
     }
+  }
+
+  Future<File> writeData(String title, String content) async {
+    Note newNote = Note(title, content, DateTime.now(), DateTime.now());
+    var noteJson = jsonEncode(newNote);
+    print(noteJson);
+
+    final Directory directory = await getApplicationDocumentsDirectory();
+    final File file = File("${directory.path}/$myDiaryPath/myJournal.txt");
+    return file.writeAsString(noteJson);
   }
 }

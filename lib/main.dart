@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_diary/folders_build.dart';
 import 'package:my_diary/new_entry_route.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
-import  'package:path/path.dart' as path;
 
 void main() {
   FoldersBuild foldersBuild = FoldersBuild();

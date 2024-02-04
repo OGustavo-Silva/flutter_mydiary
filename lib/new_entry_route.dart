@@ -1,8 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:my_diary/note.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'package:my_diary/folders_build.dart';
 
 class NewEntryRoute extends StatefulWidget {
   const NewEntryRoute({super.key});
@@ -12,30 +9,11 @@ class NewEntryRoute extends StatefulWidget {
 }
 
 class _NewEntryRouteState extends State<NewEntryRoute> {
+  FoldersBuild foldersBuild = FoldersBuild();
+
   //final _formKey = GlobalKey<FormState>;
   final titleController = TextEditingController();
   final contentController = TextEditingController();
-
-  Future<File> writeData(String title, String content) async {
-    Note newNote = Note(title, content, DateTime.now(), DateTime.now());
-    var noteJson = jsonEncode(newNote);
-    print(noteJson);
-
-    final Directory directory = await getApplicationDocumentsDirectory();
-    final File file = File('${directory.path}/myDiary/notes.txt');
-    return file.writeAsString(noteJson);
-  }
-
-  Future<String> readNotes() async {
-    try {
-      final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/notes.txt');
-      String notes = await file.readAsString();
-      return notes;
-    } catch (e) {
-      return '';
-    }
-  }
 
   @override
   void dispose() {
@@ -99,7 +77,7 @@ class _NewEntryRouteState extends State<NewEntryRoute> {
                           margin: const EdgeInsets.fromLTRB(5, 20, 5, 5),
                           child: ElevatedButton.icon(
                             onPressed: () {
-                              writeData(titleController.text, contentController.text);
+                              foldersBuild.writeData(titleController.text, contentController.text);
                               //Navigator.pop(context);
                             },
                             icon: const Icon(Icons.check),
