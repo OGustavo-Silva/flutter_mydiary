@@ -74,7 +74,20 @@ class FoldersBuild {
         final File file = File(
             "${directory.path}/${title}/${homeDirDirsList[i]}/${yearDirDirsList[j]}/myJournal.txt");
         String notes = await file.readAsString();
-        print(notes);
+
+        LineSplitter ls = new LineSplitter();
+        List<String> notesList = ls.convert(notes);
+        
+        notesList.forEach((element) {
+          print(element);
+          print(jsonDecode(element));
+          //Map<String, dynamic> valueMap = jsonDecode(encodedString);
+          Note note = Note.fromJson(jsonDecode(element));
+          //Note note = Note.fromJson(valueMap);
+          print(note);
+          print(note.title);
+          print(note.createdDate);
+        });
       }
     }
   }
@@ -86,6 +99,6 @@ class FoldersBuild {
 
     final Directory directory = await getApplicationDocumentsDirectory();
     final File file = File("${directory.path}/$myDiaryPath/myJournal.txt");
-    return file.writeAsString(noteJson);
+    return file.writeAsString(noteJson, mode: FileMode.append);
   }
 }
