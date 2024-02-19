@@ -15,8 +15,11 @@ void main() {
     home: MyApp(),
   ));
   notesListFuture.then((value) => {
-    value.forEach((element) {notesList.add(element); print(element.title);})
-  });
+        value.forEach((element) {
+          notesList.add(element);
+          print(element.title);
+        })
+      });
 }
 
 class MyApp extends StatefulWidget {
@@ -28,39 +31,42 @@ class MyApp extends StatefulWidget {
   }
 }
 
-
-
 class _MyAppState extends State<MyApp> {
   String text = "hello world";
 
   @override
   Widget build(BuildContext context) {
-    print(" karaio ${notesList.length}");
-    return Scaffold(
-      appBar: AppBar(
-          title: const Text("MyDiary"),
-          centerTitle: true,
-          backgroundColor: const Color.fromARGB(199, 255, 255, 255)),
-      body: Center(
-          child: Column(children: <Widget>[
-        Text(
-          text,
-          style: const TextStyle(color: Colors.white),
-        ),
-        Text(
-          notesList.length.toString(),
-          style: const TextStyle(color: Colors.white),
-        )
-      ])),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const NewEntryRoute()));
-        },
-        backgroundColor: const Color.fromARGB(199, 255, 255, 255),
-        child: const Icon(Icons.add),
-      ),
-      backgroundColor: const Color.fromARGB(0, 56, 56, 56),
+    return FutureBuilder(
+      future: foldersBuild.checkExistingNotes(),
+      initialData: testNote,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> test) {
+        return Scaffold(
+          appBar: AppBar(
+              title: const Text("MyDiary"),
+              centerTitle: true,
+              backgroundColor: const Color.fromARGB(199, 255, 255, 255)),
+          body: Center(
+              child: Column(children: <Widget>[
+            Text(
+              text,
+              style: const TextStyle(color: Colors.white),
+            ),
+            for(var note in notesList) Text(note.title, style: const TextStyle(color: Colors.white),),
+            
+          ])),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NewEntryRoute()));
+            },
+            backgroundColor: const Color.fromARGB(199, 255, 255, 255),
+            child: const Icon(Icons.add),
+          ),
+          backgroundColor: const Color.fromARGB(0, 56, 56, 56),
+        );
+      },
     );
   }
 }

@@ -20,17 +20,7 @@ class Note {
         'updatedDate': updatedDate.toString(),
       };
 
-/*
-   Note.fromJson(Map<String, dynamic> json){
-    title = json['title'];
-    content = json['content'];
-    createdDate = json['creadtedDate'];
-    updatedDate = json['updatedDate'];
-  }
-*/
-
   factory Note.fromJson(dynamic json) {
-    print("karaio ${json['createdDate']}");
     return Note(
         json['title'] as String,
         json['content'] as String,
