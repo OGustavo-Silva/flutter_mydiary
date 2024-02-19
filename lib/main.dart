@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:my_diary/folders_build.dart';
 import 'package:my_diary/new_entry_route.dart';
+import 'package:my_diary/note.dart';
+
+Note testNote = Note.empty();
+FoldersBuild foldersBuild = FoldersBuild();
+Future<List<Note>> notesListFuture = foldersBuild.checkExistingNotes();
+List<Note> notesList = [];
 
 void main() {
-  FoldersBuild foldersBuild = FoldersBuild();
   foldersBuild.createFolder();
   runApp(const MaterialApp(
     title: "MyDiary",
     home: MyApp(),
   ));
-  foldersBuild.checkExistingNotes();
+  notesListFuture.then((value) => {
+    value.forEach((element) {notesList.add(element); print(element.title);})
+  });
 }
 
 class MyApp extends StatefulWidget {
@@ -21,21 +28,30 @@ class MyApp extends StatefulWidget {
   }
 }
 
+
+
 class _MyAppState extends State<MyApp> {
   String text = "hello world";
+
   @override
   Widget build(BuildContext context) {
+    print(" karaio ${notesList.length}");
     return Scaffold(
       appBar: AppBar(
           title: const Text("MyDiary"),
           centerTitle: true,
           backgroundColor: const Color.fromARGB(199, 255, 255, 255)),
       body: Center(
-        child: Text(
+          child: Column(children: <Widget>[
+        Text(
           text,
           style: const TextStyle(color: Colors.white),
         ),
-      ),
+        Text(
+          notesList.length.toString(),
+          style: const TextStyle(color: Colors.white),
+        )
+      ])),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,

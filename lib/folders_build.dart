@@ -24,71 +24,68 @@ class FoldersBuild {
         .create(recursive: true);
   }
 
-  void checkExistingNotes() async {
-    final Directory directory =
-        await getApplicationDocumentsDirectory(); //Return Documents folder equivalent
-    final stat = FileStat.statSync('${directory.path}/${title}');
-    print("myDiary folder stat ${stat.changed}");
+  Future<List<Note>> checkExistingNotes() async {
+    try {
+      List<Note> notesList = [];
 
-    final diaryDir = "${directory.path}/${title}";
-    final List<FileSystemEntity> homeDirItems =
-        await Directory(diaryDir).list().toList();
-    //homeDirItems.forEach((element) {print(element);}); //print every file/dir in myDiary folder
+      final Directory directory =
+          await getApplicationDocumentsDirectory(); //Return Documents folder equivalent
+      final stat = FileStat.statSync('${directory.path}/${title}');
+      print("myDiary folder stat ${stat.changed}");
 
-    final Iterable<Directory> homeDirDirectories =
-        homeDirItems.whereType<Directory>();
-    List<String> homeDirDirsList = [];
-    homeDirDirectories.forEach((element) {
-      var dirName = element.toString();
-      homeDirDirsList
-          .add(path.basename(dirName.substring(0, dirName.length - 1)));
-    });
-    homeDirDirsList.sort();
-    homeDirDirsList.forEach((element) {
-      print(element.toString());
-    });
+      final diaryDir = "${directory.path}/${title}";
+      final List<FileSystemEntity> homeDirItems =
+          await Directory(diaryDir).list().toList();
+      //homeDirItems.forEach((element) {print(element);}); //print every file/dir in myDiary folder
 
-    //run over years directories
-    for (int i = homeDirDirsList.length - 1; i >= 0; i--) {
-      var yearDirectory =
-          Directory("${directory.path}/${title}/${homeDirDirsList[i]}");
-
-      final List<FileSystemEntity> yearDirItems =
-          await Directory(yearDirectory.path).list().toList();
-      final Iterable<Directory> yearDirDirectories =
-          yearDirItems.whereType<Directory>();
-
-      List<String> yearDirDirsList = [];
-      yearDirDirectories.forEach((element) {
+      final Iterable<Directory> homeDirDirectories =
+          homeDirItems.whereType<Directory>();
+      List<String> homeDirDirsList = [];
+      homeDirDirectories.forEach((element) {
         var dirName = element.toString();
-        yearDirDirsList
+        homeDirDirsList
             .add(path.basename(dirName.substring(0, dirName.length - 1)));
       });
-      yearDirDirsList.sort();
-      yearDirDirsList.forEach((element) {
-        print(element);
-      });
+      homeDirDirsList.sort();
 
-      //run over the months directories inside i=year directory and open myJournal.txt
-      for (int j = yearDirDirsList.length - 1; j >= 0; j--) {
-        final File file = File(
-            "${directory.path}/${title}/${homeDirDirsList[i]}/${yearDirDirsList[j]}/myJournal.txt");
-        String notes = await file.readAsString();
+      //run over years directories
+      for (int i = homeDirDirsList.length - 1; i >= 0; i--) {
+        var yearDirectory =
+            Directory("${directory.path}/${title}/${homeDirDirsList[i]}");
 
-        LineSplitter ls = new LineSplitter();
-        List<String> notesList = ls.convert(notes);
-        
-        notesList.forEach((element) {
-          print(element);
-          print(jsonDecode(element));
-          //Map<String, dynamic> valueMap = jsonDecode(encodedString);
-          Note note = Note.fromJson(jsonDecode(element));
-          //Note note = Note.fromJson(valueMap);
-          print(note);
-          print(note.title);
-          print(note.createdDate);
+        final List<FileSystemEntity> yearDirItems =
+            await Directory(yearDirectory.path).list().toList();
+        final Iterable<Directory> yearDirDirectories =
+            yearDirItems.whereType<Directory>();
+
+        List<String> yearDirDirsList = [];
+        yearDirDirectories.forEach((element) {
+          var dirName = element.toString();
+          yearDirDirsList
+              .add(path.basename(dirName.substring(0, dirName.length - 1)));
         });
+        yearDirDirsList.sort();
+        yearDirDirsList.forEach((element) {});
+
+        //run over the months directories inside i=year directory, open myJournal.txt and create note obj
+        for (int j = yearDirDirsList.length - 1; j >= 0; j--) {
+          final File file = File(
+              "${directory.path}/${title}/${homeDirDirsList[i]}/${yearDirDirsList[j]}/myJournal.txt");
+          String notes = await file.readAsString();
+
+          LineSplitter ls = new LineSplitter();
+          List<String> notesListTxt = ls.convert(notes);
+
+          notesListTxt.forEach((element) {
+            Note note = Note.fromJson(jsonDecode(element));
+            notesList.add(note);
+          });
+        }
       }
+      return notesList;
+    } catch (e) {
+      print(e);
+      rethrow;
     }
   }
 
