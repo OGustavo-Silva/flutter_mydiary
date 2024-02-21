@@ -27,4 +27,11 @@ class Note {
         DateTime.parse(json['createdDate']),
         DateTime.parse(json['updatedDate']));
   }
+
+  bool isEmpty(){
+    if((title == "") && (content =="") && (createdDate == DateTime(1)) && (updatedDate == DateTime(1))  ){
+      return true;
+    }
+    return false;
+  }
 }

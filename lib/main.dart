@@ -17,7 +17,6 @@ void main() {
   notesListFuture.then((value) => {
         value.forEach((element) {
           notesList.add(element);
-          print(element.title);
         })
       });
 }
@@ -52,6 +51,8 @@ class _MyAppState extends State<MyApp> {
               style: const TextStyle(color: Colors.white),
             ),
             for(var note in notesList) Text(note.title, style: const TextStyle(color: Colors.white),),
+
+            
             
           ])),
           floatingActionButton: FloatingActionButton(
