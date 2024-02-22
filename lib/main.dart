@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_diary/folders_build.dart';
 import 'package:my_diary/new_entry_route.dart';
 import 'package:my_diary/note.dart';
+import 'package:my_diary/note_widget.dart';
 
 Note testNote = Note.empty();
 FoldersBuild foldersBuild = FoldersBuild();
@@ -31,14 +32,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String text = "hello world";
-
   @override
   Widget build(BuildContext context) {
+    
     return FutureBuilder(
       future: foldersBuild.checkExistingNotes(),
       initialData: testNote,
       builder: (BuildContext context, AsyncSnapshot<dynamic> test) {
+        
         return Scaffold(
           appBar: AppBar(
               title: const Text("MyDiary"),
@@ -46,13 +47,7 @@ class _MyAppState extends State<MyApp> {
               backgroundColor: const Color.fromARGB(199, 255, 255, 255)),
           body: Center(
               child: Column(children: <Widget>[
-            Text(
-              text,
-              style: const TextStyle(color: Colors.white),
-            ),
-            for(var note in notesList) Text(note.title, style: const TextStyle(color: Colors.white),),
-
-            
+            for(Note note in notesList) NoteWidget(note),
             
           ])),
           floatingActionButton: FloatingActionButton(

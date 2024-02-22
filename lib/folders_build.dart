@@ -30,8 +30,6 @@ class FoldersBuild {
 
       final Directory directory =
           await getApplicationDocumentsDirectory(); //Return Documents folder equivalent
-      final stat = FileStat.statSync('${directory.path}/${title}');
-      print("myDiary folder stat ${stat.changed}");
 
       final diaryDir = "${directory.path}/${title}";
       final List<FileSystemEntity> homeDirItems =
