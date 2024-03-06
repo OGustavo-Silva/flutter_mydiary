@@ -21,6 +21,7 @@ class NoteWidget extends StatelessWidget {
                 Text(
                   note.title,
                   style: const TextStyle(
+                    
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
